@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<!-- result 的常用类型
+	dispatcher//默认类型，转发到JSP
+	redirect//重定向到JSP
+	redirectAction//重定向到Actioin
+	chain//转发到Actioin
+	stream//返回一个流
+	json//返回json
+ -->
+<struts>
+<!-- 
+产品
+浏览
+模块
+的Action
+定义
+ -->
+
+	<package name="dang-main" 
+		 extends="dang-default">
+		<!-- 最新上架栏 -->
+		<action name="new" class="org.dang.action.main.NewAction">
+			<result >/main/new.jsp	</result>
+		</action>
+		<!-- 热销栏 -->
+		<action name="hot" class="org.dang.action.main.HotAction"  method="hot">
+			<result >/main/hot.jsp</result>
+		</action>
+		<!-- 推荐栏 -->
+		<action name="recommend" class="org.dang.action.main.RecommendAction">
+			<result >/main/recommend.jsp</result>
+		</action>
+		<!--最新热销栏 -->
+		<action name="newhotaction" class="org.dang.action.main.HotAction" method="newhot">
+			<param name="datewhere">1</param>
+			<result>/main/newhot.jsp</result>
+		</action>
+		<!--书详细信息 -->
+		<action name="findbookbyid" class="org.dang.action.main.MainAcion" method="findbookbyid">
+			<result>/main/book_info.jsp</result>
+		</action>
+
+
+	</package>
+</struts>

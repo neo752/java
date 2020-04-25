@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+	<package name="dang-admin"  extends="dang-default">
+	<!-- 管理模块的Action定义 -->
+		<!-- 查询-->
+		<action name="showtable*" class="org.dang.action.admin.AdminAction" method="{1}">
+			<param name="page">1</param>
+			<param name="pagesize">10</param>
+			<result>/WEB-INF/admin/showtable{1}.jsp</result>
+		</action>
+		<!-- 修改-->
+		<action name="adminModify" class="org.dang.action.admin.AdminAction" method="adminModify">
+			<result type="json">
+				<param name="root">ok</param>
+			</result>
+		</action>
+		<!-- 删除-->
+		<action name="adminDel" class="org.dang.action.admin.AdminAction" method="adminDel">
+			<result type="json">
+				<param name="root">ok</param>
+			</result>
+		</action>
+		<!-- 添加-->
+		<action name="adminAdd" class="org.dang.action.admin.AdminAction" method="adminAdd">
+			<result>/WEB-INF/admin/adminmain.jsp</result>
+		</action>
+		
+	</package>
+</struts>

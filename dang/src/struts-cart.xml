@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<!-- result 的常用类型
+	dispatcher//默认类型，转发到JSP
+	redirect//重定向到JSP
+	redirectAction//重定向到Actioin
+	chain//转发到Actioin
+	stream//返回一个流
+	json//返回json
+ -->
+<struts>
+	<package name="dang-cart"  extends="dang-default">
+	<!-- 购物车模块的Action定义 -->
+		<!-- 购物车商品查找list -->
+		<action name="findallcart" class="org.dang.action.cart.CartAction"
+			method="findall">
+			<result>/cart/cart_list.jsp</result>
+		</action>
+		<!-- 购物车商品增加 -->
+		<action name="addcart" class="org.dang.action.cart.CartAction"
+			method="add">
+			<result type="json">
+				<param name="root">buy</param>
+			</result>
+		</action>
+		<!-- 购物车删除商品 -->
+		<action name="delcart" class="org.dang.action.cart.CartAction"
+			method="del">
+			<result type="chain">findallcart</result>
+		</action>
+		<!-- 购物车恢复商品 -->
+		<action name="undelcart" class="org.dang.action.cart.CartAction"
+			method="undel">
+			<result type="chain">findallcart</result>
+		</action>
+		<!-- 购物车清空所有商品 -->
+		<action name="clearall" class="org.dang.action.cart.CartAction"
+			method="clearall">
+			<result type="chain">findallcart</result>
+		</action>
+		<!-- 购物车清空已购商品 -->
+		<action name="clearup" class="org.dang.action.cart.CartAction"
+			method="clearup">
+			<result type="chain">findallcart</result>
+		</action>
+		<!-- 购物车清空待恢复商品 -->
+		<action name="cleardown" class="org.dang.action.cart.CartAction"
+			method="cleardown">
+			<result type="chain">findallcart</result>
+		</action>
+		<!-- 购物车彻底删除商品 -->
+		<action name="removecart" class="org.dang.action.cart.CartAction"
+			method="remove">
+			<result type="chain">findallcart</result>
+		</action>
+		<!-- 购物车加减商品 数量-->
+		<action name="modifycart" class="org.dang.action.cart.CartAction"
+			method="modify">
+			<result type="json">
+				<param name="root">totalprice</param>
+			</result>
+		</action>
+		<!-- 购物车总价及省钱-->
+		<action name="gettotalAndtakeprice" class="org.dang.action.cart.CartAction"
+			method="gettotalAndtakeprice">
+			<result type="json">
+				<param name="root">takeprice</param>
+			</result>
+		</action>
+		<!-- 生成确认订单-->
+				<action name="orderinfo" class="org.dang.action.cart.CartAction"
+			method="findall">
+			<interceptor-ref name="CheckEmail" />
+			<result>/order/order_info.jsp</result>
+			<result name="checkcode">/user/verify_form.jsp</result>
+		</action>
+		<!--查询购物车信息  -->
+				<action name="cartnum" class="org.dang.action.cart.CartAction"
+			method="cartnum">
+			<result>/main/mycart.jsp</result>
+		</action>
+	</package>
+</struts>

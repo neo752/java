@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+<!-- result 的常用类型
+	dispatcher//默认类型，转发到JSP
+	redirect//重定向到JSP
+	redirectAction//重定向到Actioin
+	chain//转发到Actioin
+	stream//返回一个流
+	json//返回json
+ -->
+<struts>
+	<package name="dang-order" extends="dang-default">
+	<!-- 订单模块的Action定义 -->
+			<!--转向地址添写  -->
+				<action name="addressform" class="org.dang.action.order.OrderAction"
+			method="findalladdress">
+			<interceptor-ref name="logAndLogin" />
+			<result>/order/address_form.jsp</result>
+		</action>
+			<!--订单写入数据库  -->
+				<action name="order_ok" class="org.dang.action.order.OrderAction"
+			method="order_ok">
+			<interceptor-ref name="logAndLogin" />
+			<result>/order/order_ok.jsp</result>
+		</action>
+			<!--查询订单  -->
+				<action name="orderfindall" class="org.dang.action.order.OrderAction"
+			method="orderfindall">
+			<interceptor-ref name="logAndLogin" />
+			<result>/order/order_list.jsp</result>
+		</action>
+			<!--查询地址  -->
+				<action name="addressfindall" class="org.dang.action.order.OrderAction"
+			method="findalladdress">
+			<interceptor-ref name="logAndLogin" />
+			<result>/order/address_list.jsp</result>
+		</action>
+			<!--删除一个地址  -->
+				<action name="deladdress" class="org.dang.action.order.OrderAction"
+			method="deladdress">
+			<interceptor-ref name="logAndLogin" />
+			<result type="chain">addressfindall</result>
+		</action>
+			<!--查询订单下已购商品  -->
+				<action name="item_info" class="org.dang.action.order.OrderAction"
+			method="item_info">
+			<interceptor-ref name="logAndLogin" />
+			<result>/order/item_info.jsp</result>
+		</action>
+
+
+	</package>
+</struts>

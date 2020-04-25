@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN"
+    "http://struts.apache.org/dtds/struts-2.1.7.dtd">
+
+<struts>
+	<!--模式 -->
+	<!-- <constant name="struts.devMode" value="true"/> 开发模式，更多的错误提示 -->
+	<!-- <constant name="struts.serve.static.browserCache" value="false"/> 关闭静态缓存 -->
+	<!-- <constant name="struts.configuration.xml.reload" value="true"/> 更改后自动加载 -->
+	<constant name="struts.multipart.maxSize" value="102400000"/>
+	<!-- <constant name="com.chinacnd.allowed.images" value="gif,jpeg,jpg,png,bmp"/>上传图片类型后缀 
+		<constant name="struts.multipart.saveDir" value="/home/soft01/Desktop/tempdir"/> -->
+	<include file="struts-user.xml" />
+	<include file="struts-order.xml" />
+	<include file="struts-cart.xml" />
+	<include file="struts-main.xml" />
+	<include file="struts-admin.xml" />
+	<package name="dang-default" extends="json-default">
+
+		<!-- 拦截器 -->
+		<interceptors>
+			<interceptor name="logger"
+				class="org.dang.interceptor.LoggerInterceptor" />
+			<interceptor name="checklogin"
+				class="org.dang.interceptor.CheckLoginInterceptor" />
+			<interceptor name="transaction"
+				class="org.dang.interceptor.TransactionInterceptor" />
+			<interceptor name="Checkip"
+				class="org.dang.interceptor.CheckIpInterceptor" />
+			<interceptor name="Checkemail"
+				class="org.dang.interceptor.CheckEmailIpInterceptor" />
+			<!--设置 拦截集合 -->
+			<interceptor-stack name="logAndLogin">
+				<interceptor-ref name="checklogin" />
+				<interceptor-ref name="logger" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+			<interceptor-stack name="CheckIp">
+				<interceptor-ref name="Checkip" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+			<interceptor-stack name="CheckEmail">
+				<interceptor-ref name="Checkemail" />
+				<interceptor-ref name="defaultStack" />
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="CheckIp"/>
+		<!-- 定义共通的拦截器 -->
+
+		<global-results>
+			<result name="error" type="redirect">/error/error.jsp</result>
+			<result name="login" type="redirect">/user/login_form.jsp</result>
+			<result name="back" type="chain">${ippath}</result>
+   			<result name="adminter" >../WEB-INF/admin/adminmain.jsp</result>
+		</global-results>
+
+		<!--进入我的当当 -->
+		<action name="user_main" class="org.dang.action.CheckLoginAction">
+
+			<interceptor-ref name="logAndLogin" />
+			<result name="success" type="redirect">/user/user_main.jsp</result>
+		</action>
+		<!--退出登陆 -->
+		<action name="removeUser" class="org.dang.action.main.MainAcion"
+			method="removeUser1">
+			<result type="json">
+				<param name="root">ok</param>
+			</result>
+		</action>
+		<!--退出登陆1 -->
+		<action name="removeUser1" class="org.dang.action.main.MainAcion"
+			method="removeUser1">
+			<result type="redirect">/user/login_form.jsp</result>
+		</action>
+		<!-- 类别左栏 -->
+		<action name="all_category" class="org.dang.action.main.CategoryAction" method="findAllCategories">
+			<result>/main/category.jsp</result>
+		</action>
+		<!-- 菜单栏 -->
+		<action name="head_category" class="org.dang.action.main.CategoryAction" method="findAllCategories">
+			<result>/common/head.jsp</result>
+		</action>
+		<!--图书单类别列表 -->
+		<action name="booklist" class="org.dang.action.main.BookListAction">
+			<param name="pagesize">3</param>
+			<param name="page">1</param>
+			<param name="where">1</param>
+			<result>/main/book_list.jsp</result>
+		</action>
+		<!--图书搜索 -->
+		<action name="search" class="org.dang.action.main.SearchAction">
+			<param name="pagesize">5</param>
+			<param name="page">1</param>
+			<result>/main/search.jsp</result>
+		</action>
+		
+		
+	</package>
+
+
+</struts>

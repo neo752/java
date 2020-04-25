@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<!-- result 的常用类型
+	dispatcher//默认类型，转发到JSP
+	redirect//重定向到JSP
+	redirectAction//重定向到Actioin
+	chain//转发到Actioin
+	stream//返回一个流
+	json//返回json
+ -->
+<struts>
+<!--
+用
+户
+管
+理 
+-->
+			<package name="imgae" extends="dang-default">
+			<!-- 验证码定向 -->
+					 			<action name="image" class="org.dang.action.ImageAction" >
+			   				<!--定向  -->
+			   				<result type="stream" name="success">
+			   					<param name="inputName">is</param>
+			   				</result>
+								</action>
+					<!-- 验证码验证 -->
+								<action name="checkcode" class="org.dang.action.CheckCodeAction" >
+			   				<result type="json">
+			   					<param name="root">ok</param>
+			   				</result>
+					 			</action>
+			</package>
+		 <package name="user" extends="dang-default" >
+		
+		<!-- 邮箱验证 -->
+					<action name="checkemail" class="org.dang.action.user.RegisterAction" 
+							method="checkemail">
+   				<result type="json">
+   					<param name="root">ok</param>
+   				</result>
+		 			</action>
+		<!--昵称验证 -->
+					<action name="checknickname" class="org.dang.action.user.RegisterAction" 
+							method="checknickname">
+   				<result type="json">
+   					<param name="root">ok</param>
+   				</result>
+		 			</action>
+		 <!--提交注册 -->
+					<action name="regist" class="org.dang.action.user.RegisterAction" 
+							method="regist" >
+   				<result name="verify">/user/verify_form.jsp</result>
+		 			</action>
+		 <!--邮箱注册码验证 -->
+					<action name="registerTwo" class="org.dang.action.user.RegisterAction" 
+							method="checkVerifyCode" >
+   				<result name="success">/user/register_ok.jsp</result>
+   				<result name="false">/user/verify_form.jsp</result>
+		 			</action>
+			 <!--登陆提交 -->
+					<action name="checklogin" class="org.dang.action.user.RegisterAction" 
+							method="checkLogin" >
+   				<result name="success" type="redirect">/main/main.jsp</result>
+   				<result name="checkcode">/user/verify_form.jsp</result>
+   				<result name="false" >/user/login_form.jsp</result>
+		 			</action>
+		 	 <!--重新发送邮件验证码 -->
+					<action name="redirectcode" class="org.dang.action.user.RegisterAction" 
+							method="redirectcode" >
+   				<result type="json">
+   					<param name="root">ok</param>
+   				</result>
+		 			</action>
+		 	 <!--邮箱更改 -->
+					<action name="email_modify" class="org.dang.action.user.RegisterAction" method="emailmodify">
+						<result type="json">
+							<param name="root">ok</param>
+						</result>
+					</action>
+		 	 <!--昵称更改 -->
+					<action name="nickname_modify" class="org.dang.action.user.RegisterAction" method="nicknamemodify">
+						<result type="json">
+							<param name="root">ok</param>
+						</result>
+					</action>
+		 	 <!--密码验证 -->
+					<action name="pwd_check" class="org.dang.action.user.RegisterAction" method="pwd_check">
+						<result type="json">
+							<param name="root">ok</param>
+						</result>
+					</action>
+		 	 <!--密码修改 -->
+					<action name="pwd_modify" class="org.dang.action.user.RegisterAction" method="pwdmodify">
+						<result type="json">
+							<param name="root">ok</param>
+						</result>
+					</action>
+		 	 <!--文件上传 -->
+					<action name="upload" class="org.dang.action.user.UploadAction" method="upload">
+						<result type="chain">findfiles</result>
+						<result name="false" type="redirect">../error/fileExists.jsp</result>
+					</action>
+			<!--上传文件加载 -->
+					<action name="findfiles" class="org.dang.action.user.UploadAction" method="findfiles">
+						<result name="success">/user/user_main.jsp</result>
+					</action>
+			 <!--文件下载 -->
+					<action name="down" class="org.dang.action.user.DownloadAction">
+						<result type="stream">
+						     <param name="contentType">
+						    	 application/octet-stream;charset=uft-8
+						     </param>
+							<param name="inputName">fstream</param>
+							<param name="contentDisposition">attachment;filename="${fname}"</param>
+						</result>
+					</action>
+		 	 <!--文件删除 -->
+					<action name="delupfile" class="org.dang.action.user.UploadAction" method="delupfile">
+						<result>/user/user_main.jsp</result>
+					</action>
+			 <!--文件改名 -->
+					<action name="modifyfilename" class="org.dang.action.user.UploadAction" method="modifyfile">
+						<result>/user/user_main.jsp</result>
+					</action>
+		 
+		 </package>
+
+
+</struts>
